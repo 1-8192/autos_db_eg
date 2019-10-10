@@ -12,15 +12,13 @@
     }
 
     //adding car logic 
-    $success = "";
+    $message = "";
 
     if (isset($_POST['make']) && isset($_POST['year']) && isset($_POST['mileage'])) {
         if (strlen($_POST['make']) < 1 ) {
-            $message="Make is required";
-            $success=false;
+            $message="<p>Make is required</p>";
         } else if (!is_numeric($_POST['year']) || !is_numeric($_POST['mileage'])) {
-            $message="Mileage and year must be numeric";
-            $success=false;
+            $message="<p>Mileage and year must be numeric<p>";
         } else {
             $stmt = $pdo->prepare('INSERT INTO autos (make, year, mileage) VALUES (:mk, :yr, :mi)');
             $stmt->execute(array(
@@ -28,7 +26,7 @@
                 ':yr' => $_POST['year'],
                 ':mi' => $_POST['mileage']
             ));
-            $success=true;
+            $message='<p style="color:green">Record inserted</p>';
         }
     }
 
@@ -47,8 +45,8 @@
             <h1> Tracking Autos for <?php echo(htmlentities($_GET["name"])) ?>
             </h1>
             <?php 
-                if ($success) {
-                    echo(`<p style="color: green">Record inserted</p>`);
+                if ($message !== "") {
+                    echo($message);
                 }
             ?>
             <form method="POST">
