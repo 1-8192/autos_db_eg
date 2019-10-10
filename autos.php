@@ -20,18 +20,18 @@
         } else if (!is_numeric($_POST['year']) || !is_numeric($_POST['mileage'])) {
             $message="Mileage and year must be numeric";
         } else {
-            $stmt = $pdo->prepare('INSERT INTO autos (make, year, mileage) VALUES (:mk, yr:, :mi)');
+            $stmt = $pdo->prepare('INSERT INTO autos (make, year, mileage) VALUES (:mk, :yr, :mi)');
             $stmt->execute(array(
                 ':mk' => $_POST['make'],
                 ':yr' => $_POST['year'],
-                ":mi" => $_POST['mileage']
+                ':mi' => $_POST['mileage']
             ));
             $message = "Record inserted";
         }
     }
 
     //getting car info for display
-    $stmt = $pdo->query("SELECT make, year, mileage FROM autos");
+    $stmt = $pdo->query("SELECT make, year, mileage FROM autos ORDER BY make");
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -42,13 +42,14 @@
     </head>
     <body>
         <div class="container">
-            <h1> Tracking Autos for <?php htmlentities($_GET["name"]) ?></h1>
+            <h1> Tracking Autos for <?php htmlentities($_GET["name"]) ?>
+            </h1>
             <?php 
                 if ($message !=="") {
                     echo(`<div class="alert alert-success">$message</div>`);
                 }
             ?>
-            <form>
+            <form method="POST">
                 <p>Make:</p>
                 <input type="text" name="make" id="make">
                 <p>Year:</p>
@@ -61,6 +62,12 @@
        </div>
        <div>
         <h2>Automobiles</h2>
+        <table border="1">
+            <tr>
+                <th>Make</th>
+                <th>Year</th>
+                <th>Mileage</th>
+            </tr>
         <?php
             foreach ($rows as $row) {
                 echo "<tr><td>";
@@ -72,6 +79,7 @@
                 echo "</td><tr>";
             }
         ?>
+        </table>
        </div>
     </body>
 </html>
