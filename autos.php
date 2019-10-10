@@ -42,7 +42,7 @@
     </head>
     <body>
         <div class="container">
-            <h1> Tracking Autos for <?php htmlentities($_GET["name"]) ?>
+            <h1> Tracking Autos for <?php echo(htmlentities($_GET["name"])) ?>
             </h1>
             <?php 
                 if ($message !=="") {
