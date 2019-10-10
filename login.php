@@ -11,6 +11,8 @@
     if (isset($_POST['email']) && isset($_POST['pass'])) {
         if (strlen($_POST['email']) < 1 || strlen($_POST['pass']) < 1) {
             $message = "Email and password and required";
+        } else if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $message = "Email must have an at-sign (@)";
         } else {
             if ($stored_hash == hash('md5', $salt.$_POST["pass"])) {
                 error_log("Login success".$_POST["email"]);
