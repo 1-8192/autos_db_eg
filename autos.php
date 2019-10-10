@@ -22,9 +22,9 @@
         } else {
             $stmt = $pdo->prepare('INSERT INTO autos (make, year, mileage) VALUES (:mk, :yr, :mi)');
             $stmt->execute(array(
-                ':mk' => $_POST['make'],
-                ':yr' => $_POST['year'],
-                ':mi' => $_POST['mileage']
+                ':mk' => htmlentities($_POST['make']),
+                ':yr' => htmlentities($_POST['year']),
+                ':mi' => htmlentities($_POST['mileage'])
             ));
             $message='<p style="color:green">Record inserted</p>';
         }
@@ -56,8 +56,8 @@
                 <input type="text" name="year" id="year">
                 <p>Mileage:</p>
                 <input type="text" name="mileage" id="mileage"></br>
-                <input type="submit" value="add">
-                <input type="submit" name="cancel" value="Logout">
+                <input type="submit" value="Add">
+                <input type="submit" name="cancel" value="logout">
             </form>
        </div>
        <div>
