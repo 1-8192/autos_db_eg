@@ -1,25 +1,53 @@
 <?php
-    //logging logic
-    if (!isset($_GET["name"])) {
-        die("Name parameter missing");
-    }
+    require_once "pdo.php";
 
-    if ( isset($_POST['cancel'])) {
+    //logging logic
+    if (isset($_POST["cancel"])) {
         header('Location: index.php');
         return;
     }
 
+    if (!isset($_GET["name"])) {
+        die("Name parameter missing");
+    }
+
+    //adding car logic 
+    $message = "";
+
+    if (isset($_POST['make']) && isset($_POST['year']) && isset($_POST['mileage'])) {
+        if (strlen($_POST['make']) < 1 ) {
+            $message="Make is required";
+        } else if (!is_numeric($_POST['year']) || !is_numeric($_POST['mileage'])) {
+            $message="Mileage and year must be numeric";
+        } else {
+            $stmt = $pdo->prepare('INSERT INTO autos (make, year, mileage) VALUES (:mk, yr:, :mi)');
+            $stmt->execute(array(
+                ':mk' => $_POST['make'],
+                ':yr' => $_POST['year'],
+                ":mi" => $_POST['mileage']
+            ));
+            $message = "Record inserted";
+        }
+    }
+
+    //getting car info for display
+    $stmt = $pdo->query("SELECT make, year, mileage FROM autos");
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title>Alessandro Allegranzi - autos db</title>
         <?php require_once "bootstrap_styling.php" ?>
-        <?php require_once "pdo.php" ?>
     </head>
     <body>
         <div class="container">
             <h1> Tracking Autos for <?php htmlentities($_GET["name"]) ?></h1>
+            <?php 
+                if ($message !=="") {
+                    echo(`<div class="alert alert-success">$message</div>`);
+                }
+            ?>
             <form>
                 <p>Make:</p>
                 <input type="text" name="make" id="make">
@@ -28,11 +56,22 @@
                 <p>Mileage:</p>
                 <input type="text" name="mileage" id="mileage"></br>
                 <input type="submit" value="add">
-                <input type="submit" name="logout" value="Logout">
+                <input type="submit" name="cancel" value="Logout">
             </form>
        </div>
        <div>
         <h2>Automobiles</h2>
+        <?php
+            foreach ($rows as $row) {
+                echo "<tr><td>";
+                echo($row['make']);
+                echo"</td><td>";
+                echo($row['year']);
+                echo "</td><td>";
+                echo($row['mileage']);
+                echo "</td><tr>";
+            }
+        ?>
        </div>
     </body>
 </html>
