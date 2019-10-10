@@ -13,8 +13,10 @@
             $message = "Email and password and required";
         } else {
             if ($stored_hash == hash('md5', $salt.$_POST["pass"])) {
-                header("Location: game.php?name=".urlencode($_POST["email"]));
+                error_log("Login success".$_POST["email"]);
+                header("Location: autos.php?name=".urlencode($_POST["email"]));
             } else {
+                error_log("Login Fail".$_POST["email"]."$check");
                 $message = "Incorrect password";
             }
         }
