@@ -8,8 +8,11 @@
         <h1>Welcome to the Auto Database</h1>
         <a href="login.php">Please Log In</a>
         <p>
-            Attempt to go to <a href="autos.php">autos.php</a> without logging in - it should fail with an error message.
+            Attempt to go to <a href="view.php">view.php</a> without logging in - it should fail with an error message.
         </p>
-        <a href="https://www.wa4e.com/assn/autosdb/">Specifications for this Application</a>
+        <p>
+            Attempt to go to <a href="add.php">add.php</a> without logging in - it should fail with an error message.
+        </p>
+        <a href="https://www.wa4e.com/assn/autosess/">Specifications for this Application</a>
     </body>
 </html>
