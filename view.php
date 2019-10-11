@@ -11,25 +11,6 @@
         die("Name parameter missing");
     }
 
-    //adding car logic 
-    $message = "";
-
-    if (isset($_POST['make']) && isset($_POST['year']) && isset($_POST['mileage'])) {
-        if (strlen($_POST['make']) < 1 ) {
-            $message="<p>Make is required</p>";
-        } else if (!is_numeric($_POST['year']) || !is_numeric($_POST['mileage'])) {
-            $message="<p>Mileage and year must be numeric<p>";
-        } else {
-            $stmt = $pdo->prepare('INSERT INTO autos (make, year, mileage) VALUES (:mk, :yr, :mi)');
-            $stmt->execute(array(
-                ':mk' => htmlentities($_POST['make']),
-                ':yr' => htmlentities($_POST['year']),
-                ':mi' => htmlentities($_POST['mileage'])
-            ));
-            $message='<p style="color:green">Record inserted</p>';
-        }
-    }
-
     //getting car info for display
     $stmt = $pdo->query("SELECT make, year, mileage FROM autos ORDER BY make");
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -44,21 +25,6 @@
         <div class="container">
             <h1> Tracking Autos for <?php echo(htmlentities($_GET["name"])) ?>
             </h1>
-            <?php 
-                if ($message !== "") {
-                    echo($message);
-                }
-            ?>
-            <form method="POST">
-                <p>Make:</p>
-                <input type="text" name="make" id="make">
-                <p>Year:</p>
-                <input type="text" name="year" id="year">
-                <p>Mileage:</p>
-                <input type="text" name="mileage" id="mileage"></br>
-                <input type="submit" value="Add">
-                <input type="submit" name="cancel" value="logout">
-            </form>
        </div>
        <div>
         <h2>Automobiles</h2>
@@ -80,6 +46,8 @@
             }
         ?>
         </table>
+        <a href="add.php">Add New</a> |
+        <a href="logout.php"> Logout</a>
        </div>
     </body>
 </html>

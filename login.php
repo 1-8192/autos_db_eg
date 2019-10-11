@@ -16,7 +16,7 @@
         } else {
             if ($stored_hash == hash('md5', $salt.$_POST["pass"])) {
                 error_log("Login success".$_POST["who"]);
-                header("Location: autos.php?name=".urlencode($_POST["who"]));
+                header("Location: view.php?name=".urlencode($_POST["who"]));
             } else {
                 error_log("Login Fail".$_POST["who"]."$check");
                 $message = "Incorrect password";
