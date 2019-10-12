@@ -3,23 +3,26 @@
     require_once "pdo.php";
 
     //logging logic
+    if (!isset($_SESSION["name"])) {
+        die("Name parameter missing");
+    }
+
     if (isset($_POST["cancel"])) {
         header('Location: logout.php');
         return;
     }
 
-    if (!isset($_SESSION["name"])) {
-        die("Name parameter missing");
-    }
-
     //adding car logic 
-    $message = "";
 
     if (isset($_POST['make']) && isset($_POST['year']) && isset($_POST['mileage'])) {
         if (strlen($_POST['make']) < 1 ) {
-            $message="<p>Make is required</p>";
+            $_SESSION["error"] = "Make is required";
+            header("Location: add.php");
+            return;
         } else if (!is_numeric($_POST['year']) || !is_numeric($_POST['mileage'])) {
-            $message="<p>Mileage and year must be numeric<p>";
+            $_SESSION["error"] = "Mileage and year must be numeric";
+            header("Location: add.php");
+            return;
         } else {
             $stmt = $pdo->prepare('INSERT INTO autos (make, year, mileage) VALUES (:mk, :yr, :mi)');
             $stmt->execute(array(
@@ -45,9 +48,10 @@
                     <h1> Tracking Autos for <?php echo(htmlentities($_SESSION["name"])) ?>
                     </h1>
                     <?php 
-                        if ($message !== "") {
-                            echo($message);
-                        }
+                        if ( isset($_SESSION['error']) ) {
+                            echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
+                            unset($_SESSION['error']);
+                          }
                     ?>
                     <form method="POST">
                         <p>Make:</p>
