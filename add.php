@@ -1,13 +1,14 @@
 <?php
+    session_start();
     require_once "pdo.php";
 
     //logging logic
     if (isset($_POST["cancel"])) {
-        header('Location: index.php');
+        header('Location: logout.php');
         return;
     }
 
-    if (!isset($_GET["name"])) {
+    if (!isset($_SESSION["name"])) {
         die("Name parameter missing");
     }
 
@@ -26,7 +27,9 @@
                 ':yr' => htmlentities($_POST['year']),
                 ':mi' => htmlentities($_POST['mileage'])
             ));
-            $message='<p style="color:green">Record inserted</p>';
+            $_SESSION['success'] = "Record inserted";
+            header("Location: view.php");
+            return;
         }
     }
 ?>
@@ -39,7 +42,7 @@
     </head>
     <body>
         <div class="container">
-                    <h1> Tracking Autos for <?php echo(htmlentities($_GET["name"])) ?>
+                    <h1> Tracking Autos for <?php echo(htmlentities($_SESSION["name"])) ?>
                     </h1>
                     <?php 
                         if ($message !== "") {

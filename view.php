@@ -1,15 +1,22 @@
 <?php
+    session_start();
     require_once "pdo.php";
 
     //logging logic
+    if (!isset($_SESSION["name"])) {
+        die("Not logged in.");
+    }
+
     if (isset($_POST["cancel"])) {
         header('Location: index.php');
         return;
     }
 
-    if (!isset($_GET["name"])) {
-        die("Name parameter missing");
-    }
+    //flash message if redirected
+    if ( isset($_SESSION['success']) ) {
+        echo('<p style="color: green;">'.htmlentities($_SESSION['success'])."</p>\n");
+        unset($_SESSION['success']);
+      }
 
     //getting car info for display
     $stmt = $pdo->query("SELECT make, year, mileage FROM autos ORDER BY make");
@@ -23,7 +30,7 @@
     </head>
     <body>
         <div class="container">
-            <h1> Tracking Autos for <?php echo(htmlentities($_GET["name"])) ?>
+            <h1> Tracking Autos for <?php echo(htmlentities($_SESSION["name"])) ?>
             </h1>
        </div>
        <div>

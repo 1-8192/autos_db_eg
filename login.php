@@ -1,4 +1,5 @@
 <?php
+    session_start();
     if (isset($_POST['cancel'])) {
         header('Location: index.php');
         return;
@@ -10,16 +11,24 @@
 
     if (isset($_POST['who']) && isset($_POST['pass'])) {
         if (strlen($_POST['who']) < 1 || strlen($_POST['pass']) < 1) {
-            $message = "Email and password and required";
+            $_SESSION['error'] = "Email and password and required";
+            header("Location: login.php");
+            return;
         } else if (!filter_var($_POST['who'], FILTER_VALIDATE_EMAIL)) {
-            $message = "Email must have an at-sign (@)";
+            $_SESSION['error'] = "Email must have an at-sign (@)";
+            header("Location: login.php");
+            return;
         } else {
+            unset($_SESSION["name"]);
             if ($stored_hash == hash('md5', $salt.$_POST["pass"])) {
                 error_log("Login success".$_POST["who"]);
-                header("Location: view.php?name=".urlencode($_POST["who"]));
+                $_SESSION["name"] = $_POST["who"];
+                $_SESSION["success"] = "Logged in.";
+                header("Location: view.php");
             } else {
-                error_log("Login Fail".$_POST["who"]."$check");
-                $message = "Incorrect password";
+                $_SESSION["error"] = "Incorrect Password.";
+                header( 'Location: login.php');
+                return;
             }
         }
     }
@@ -34,9 +43,10 @@
     <body>
         <h1>Please Log In</h1>
         <?php 
-            if ($message !== "") {
-                echo("<h3> $message </h3>");
-            }
+            if ( isset($_SESSION['error']) ) {
+                echo('<p style="color: red;">'.htmlentities($_SESSION['error'])."</p>\n");
+                unset($_SESSION['error']);
+              }
         ?>
         <form method="POST">
             <label for="email">Email</label>
