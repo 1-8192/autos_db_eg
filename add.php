@@ -4,7 +4,7 @@
 
     //logging logic
     if (!isset($_SESSION["name"])) {
-        die("Name parameter missing");
+        die("Not logged in");
     }
 
     if (isset($_POST["cancel"])) {
