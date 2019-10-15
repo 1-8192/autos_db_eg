@@ -8,7 +8,7 @@
     }
 
     if (isset($_POST["cancel"])) {
-        header('Location: logout.php');
+        header('Location: index.php');
         return;
     }
 
@@ -31,7 +31,7 @@
                 ':yr' => htmlentities($_POST['year']),
                 ':mi' => htmlentities($_POST['mileage'])
             ));
-            $_SESSION['success'] = "Record inserted";
+            $_SESSION['success'] = "Record added";
             header("Location: index.php");
             return;
         }
