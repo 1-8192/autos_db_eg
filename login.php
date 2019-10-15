@@ -24,7 +24,7 @@
                 error_log("Login success".$_POST["email"]);
                 $_SESSION["name"] = $_POST["email"];
                 $_SESSION["success"] = "Logged in.";
-                header("Location: view.php");
+                header("Location: index.php");
             } else {
                 $_SESSION["error"] = "Incorrect Password.";
                 error_log("Login failure".$_POST["email"]);
