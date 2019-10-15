@@ -23,12 +23,14 @@ if (isset($_POST["cancel"])) {
             header("Location: add.php");
             return;
         } else {
-            $stmt = $pdo->prepare('INSERT INTO autos (make, model, year, mileage) VALUES (:mk, :md, :yr, :mi)');
+            $sql = "UPDATE autos SET make = :mk, model = :md, year = :yr, mileage = :mi WHERE autos_id = :autos_id";
+            $stmt = $pdo->prepare($sql);
             $stmt->execute(array(
                 ':mk' => htmlentities($_POST['make']),
                 ':md' => htmlentities($_POST['model']),
                 ':yr' => htmlentities($_POST['year']),
-                ':mi' => htmlentities($_POST['mileage'])
+                ':mi' => htmlentities($_POST['mileage']),
+                ':autos_id' => htmlentities($_POST['autos_id'])
             ));
         $_SESSION['success'] = 'Record edited';
         header( 'Location: index.php' ) ;
