@@ -16,11 +16,11 @@ if (isset($_POST["cancel"])) {
     if ( isset($_POST['make']) && isset($_POST['model']) && isset($_POST['year']) && isset($_POST['mileage'])) {
         if (strlen($_POST['make']) < 1 || strlen($_POST['model']) < 1) {
             $_SESSION["error"] = "Make and Model are required";
-            header("Location: add.php");
+            header("Location: edit.php?autos_id=".$_POST['autos_id']);
             return;
         } else if (!is_numeric($_POST['year']) || !is_numeric($_POST['mileage'])) {
             $_SESSION["error"] = "Mileage and year must be numeric";
-            header("Location: add.php");
+            header("Location: edit.php?autos_id=".$_POST['autos_id']);
             return;
         } else {
             $sql = "UPDATE autos SET make = :mk, model = :md, year = :yr, mileage = :mi WHERE autos_id = :autos_id";

@@ -4,7 +4,7 @@
 
     //logging logic
     if (!isset($_SESSION["name"])) {
-        die("Not logged in");
+        die("ACCESS DENIED");
     }
 
     if (isset($_POST["cancel"])) {

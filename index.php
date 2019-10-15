@@ -58,10 +58,9 @@
                     echo('<p>No rows found</p>');
                     echo('<a href="add.php">Add New Entry</a></br>');
                     echo('<a href="logout.php">Logout</a></br>');
-                    echo('<p><strong>Note:</strong> Your implementation should retain data across multiple logout/login sessions. This sample implementation clears all its data on logout - which you should not do in your implementation.</p>');
                 }
             } else {
-                echo('<a href="login.php">Please Log In</a>');
+                echo('<a href="login.php">Please log in</a>');
                 echo('<p>
                     Attempt to <a href="add.php">add data</a> without logging in
                 </p>');
