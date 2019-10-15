@@ -50,7 +50,7 @@
               }
         ?>
         <form method="POST">
-            <label for="email">Email</label>
+            <label for="email">User Name</label>
             <input type="text" name="email" id="email">
             <label for="pass">Password</label>
             <input type="password" name="pass" id="pass">

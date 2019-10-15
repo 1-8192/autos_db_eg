@@ -14,9 +14,9 @@
 
     //adding car logic 
 
-    if (isset($_POST['make']) && isset($_POST['year']) && isset($_POST['mileage'])) {
-        if (strlen($_POST['make']) < 1 ) {
-            $_SESSION["error"] = "Make is required";
+    if (isset($_POST['make']) && isset($_POST['model']) && isset($_POST['year']) && isset($_POST['mileage'])) {
+        if (strlen($_POST['make']) < 1 || strlen($_POST['model']) < 1) {
+            $_SESSION["error"] = "Make and Model are required";
             header("Location: add.php");
             return;
         } else if (!is_numeric($_POST['year']) || !is_numeric($_POST['mileage'])) {
@@ -24,14 +24,15 @@
             header("Location: add.php");
             return;
         } else {
-            $stmt = $pdo->prepare('INSERT INTO autos (make, year, mileage) VALUES (:mk, :yr, :mi)');
+            $stmt = $pdo->prepare('INSERT INTO autos (make, model, year, mileage) VALUES (:mk, :md, :yr, :mi)');
             $stmt->execute(array(
                 ':mk' => htmlentities($_POST['make']),
+                ':md' => htmlentities($_POST['model']),
                 ':yr' => htmlentities($_POST['year']),
                 ':mi' => htmlentities($_POST['mileage'])
             ));
             $_SESSION['success'] = "Record inserted";
-            header("Location: view.php");
+            header("Location: index.php");
             return;
         }
     }
@@ -56,6 +57,8 @@
                     <form method="POST">
                         <p>Make:</p>
                         <input type="text" name="make" id="make">
+                        <p>Model:</p>
+                        <input type="text" name="model" id="model">
                         <p>Year:</p>
                         <input type="text" name="year" id="year">
                         <p>Mileage:</p>
