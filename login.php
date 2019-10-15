@@ -27,6 +27,7 @@
                 header("Location: view.php");
             } else {
                 $_SESSION["error"] = "Incorrect Password.";
+                error_log("Login failure".$_POST["email"]);
                 header( 'Location: login.php');
                 return;
             }
